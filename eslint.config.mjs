@@ -25,7 +25,8 @@ const eslintConfig = defineConfig([
     '**/.*cache/',
     '**/coverage/',
     '**/node_modules/',
-    '**/public/'
+    '**/public/',
+    '**/generated.ts'
   ])
 ])
 
