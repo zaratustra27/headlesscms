@@ -1,11 +1,25 @@
-// Re-export WordPress types from generated file
-export type {Book, Menu, Page, Post} from './generated'
+import type {Book, Menu, Page, Post as GeneratedPost} from './generated'
+
+// Re-export WordPress types
+export type {Book, Menu, Page}
+
+export interface Post extends GeneratedPost {
+  apagones?: HorarioACF
+}
 
 // Non-WordPress types
 export interface DynamicPageProps {
   params: Promise<{
     slug: string
   }>
+  searchParams: Promise<{[key: string]: string | string[] | undefined}>
+}
+
+export interface HorarioACF {
+  barrio?: string
+  ciudad?: string
+  fecha?: string
+  hora?: string
 }
 
 export interface SearchResults {

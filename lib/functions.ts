@@ -66,7 +66,7 @@ export async function fetchGraphQL<T = any>(
 
     // Handle GraphQL errors gracefully.
     if (data.errors) {
-      console.error('GraphQL Errors:', data.errors)
+      console.error('GraphQL Errors:', JSON.stringify(data.errors, null, 2))
       return {
         data: undefined,
         errors: data.errors

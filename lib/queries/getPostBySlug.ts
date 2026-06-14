@@ -47,6 +47,12 @@ export default async function getPostBySlug(slug: string) {
           metaDesc
           title
         }
+        apagones {
+          barrio
+          ciudad
+          fecha
+          hora
+        }
         comments(first: 30, where: {order: ASC}) {
           nodes {
             content(format: RENDERED)

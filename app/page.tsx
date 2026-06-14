@@ -30,7 +30,7 @@ export default async function Home() {
             {post.featuredImage?.node && (
               <Link
                 className="block overflow-hidden rounded-lg"
-                href={`/blog/${post.slug}`}
+                href={`/${post.slug}`}
               >
                 <Image
                   alt={post.featuredImage.node.altText ?? post.title ?? ''}
@@ -44,7 +44,7 @@ export default async function Home() {
               </Link>
             )}
             <div className="flex flex-col gap-2">
-              <Link href={`/blog/${post.slug}`}>
+              <Link href={`/${post.slug}`}>
                 <h2
                   className="text-2xl font-bold transition-colors hover:text-blue-600"
                   dangerouslySetInnerHTML={{__html: post.title ?? ''}}
@@ -59,7 +59,7 @@ export default async function Home() {
               />
               <Link
                 className="mt-2 font-semibold text-blue-600 hover:underline"
-                href={`/blog/${post.slug}`}
+                href={`/${post.slug}`}
               >
                 Read More &rarr;
               </Link>
