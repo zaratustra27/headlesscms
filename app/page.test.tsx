@@ -1,27 +1,22 @@
 import {http, HttpResponse, render, screen, server} from '@/test-utils'
 import {axe} from 'jest-axe'
+import {vi} from 'vitest'
 import Home from './page'
 
+// Mock notFound to throw, matching Next.js behavior in runtime
+vi.mock('next/navigation', () => ({
+  notFound: () => {
+    throw new Error('not found')
+  }
+}))
+
 describe('Home', () => {
-  it('should render homepage content and posts list', async () => {
+  it('should render posts list', async () => {
     server.use(
       http.post(
         `${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`,
         async ({request}) => {
           const body = (await request.json()) as {query: string}
-
-          if (body.query.includes('GetPageBySlug')) {
-            return HttpResponse.json({
-              data: {
-                page: {
-                  databaseId: 1,
-                  title: 'Welcome to Homepage',
-                  content: '<p>This is the homepage content</p>',
-                  slug: 'homepage'
-                }
-              }
-            })
-          }
 
           if (body.query.includes('GetAllPosts')) {
             return HttpResponse.json({
@@ -60,8 +55,6 @@ describe('Home', () => {
     const HomeComponent = await Home()
     const {container} = render(HomeComponent)
 
-    expect(screen.getByText('Welcome to Homepage')).toBeInTheDocument()
-    expect(screen.getByText('This is the homepage content')).toBeInTheDocument()
     expect(screen.getByText('Latest Posts')).toBeInTheDocument()
     expect(screen.getByText('Test Post')).toBeInTheDocument()
     expect(screen.getByText('5 Comments')).toBeInTheDocument()
@@ -70,31 +63,18 @@ describe('Home', () => {
     expect(results).toHaveNoViolations()
   })
 
-  it('should call notFound when no homepage data', async () => {
+  it('should call notFound when no posts data', async () => {
     server.use(
       http.post(
         `${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`,
         async ({request}) => {
           const body = (await request.json()) as {query: string}
 
-          if (body.query.includes('GetPageBySlug')) {
-            return HttpResponse.json({data: {page: null}})
-          }
-
           if (body.query.includes('GetAllPosts')) {
             return HttpResponse.json({
               data: {
                 posts: {
-                  nodes: [
-                    {
-                      databaseId: 1,
-                      title: 'Post',
-                      slug: 'post',
-                      excerpt: '',
-                      date: '',
-                      commentCount: 0
-                    }
-                  ]
+                  nodes: []
                 }
               }
             })
@@ -115,19 +95,6 @@ describe('Home', () => {
         `${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`,
         async ({request}) => {
           const body = (await request.json()) as {query: string}
-
-          if (body.query.includes('GetPageBySlug')) {
-            return HttpResponse.json({
-              data: {
-                page: {
-                  databaseId: 1,
-                  title: 'Homepage',
-                  content: '<p>Content</p>',
-                  slug: 'homepage'
-                }
-              }
-            })
-          }
 
           if (body.query.includes('GetAllPosts')) {
             return HttpResponse.json({
@@ -161,25 +128,12 @@ describe('Home', () => {
     expect(container.querySelector('img')).not.toBeInTheDocument()
   })
 
-  it('should prioritize first two images', async () => {
+  it('should prioritize first three images', async () => {
     server.use(
       http.post(
         `${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`,
         async ({request}) => {
           const body = (await request.json()) as {query: string}
-
-          if (body.query.includes('GetPageBySlug')) {
-            return HttpResponse.json({
-              data: {
-                page: {
-                  databaseId: 1,
-                  title: 'Homepage',
-                  content: '<p>Content</p>',
-                  slug: 'homepage'
-                }
-              }
-            })
-          }
 
           if (body.query.includes('GetAllPosts')) {
             return HttpResponse.json({

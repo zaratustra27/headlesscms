@@ -1,24 +1,18 @@
 import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '*.nextjswp.**'
+        protocol: 'http', // Changed from https to http for local development
+        hostname: 'localhost' // Your exact local domain
       },
       {
         protocol: 'https',
-        hostname: '*.gravatar.**'
+        hostname: '*.gravatar.com' // Cleaned up wildcard for Gravatar stability
       }
     ]
-  },
-  logging: {
-    fetches: {
-      fullUrl: true
-    }
   }
 }
 
