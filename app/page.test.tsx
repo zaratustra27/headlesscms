@@ -57,7 +57,6 @@ describe('Home', () => {
 
     expect(screen.getByText('Latest Posts')).toBeInTheDocument()
     expect(screen.getByText('Test Post')).toBeInTheDocument()
-    expect(screen.getByText('5 Comments')).toBeInTheDocument()
 
     const results = await axe(container)
     expect(results).toHaveNoViolations()

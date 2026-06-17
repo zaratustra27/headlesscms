@@ -81,9 +81,6 @@ export default async function Post({
     <article>
       <header>
         <h2 dangerouslySetInnerHTML={{__html: post.title ?? ''}} />
-        <p className="italic">
-          By {post.author?.node?.name ?? 'Unknown'} on <time>{post.date}</time>
-        </p>
       </header>
 
       {showHorario && post.apagones && (

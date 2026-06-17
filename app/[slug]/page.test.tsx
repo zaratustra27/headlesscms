@@ -100,7 +100,6 @@ describe('app/blog/[slug]/page (Server Component)', () => {
     expect(screen.getByRole('heading', {level: 2})).toHaveTextContent(
       'Hello World'
     )
-    expect(screen.getByText(/By Greg/i)).toBeInTheDocument()
 
     // Categories
     expect(

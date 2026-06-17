@@ -50,9 +50,6 @@ export default async function Home() {
                   dangerouslySetInnerHTML={{__html: post.title ?? ''}}
                 />
               </Link>
-              <p className="text-sm text-gray-500">
-                {post.commentCount} Comments
-              </p>
               <div
                 className="line-clamp-3 text-gray-700"
                 dangerouslySetInnerHTML={{__html: post.excerpt ?? ''}}
