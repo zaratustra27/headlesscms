@@ -10,18 +10,16 @@ describe('Header', () => {
       http.post(`${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`, () => {
         return HttpResponse.json({
           data: {
-            menu: {
-              menuItems: {
-                edges: [
-                  {
-                    node: {
-                      databaseId: 1,
-                      label: 'Home',
-                      uri: '/'
-                    }
+            menuItems: {
+              edges: [
+                {
+                  node: {
+                    databaseId: 1,
+                    label: 'Home',
+                    uri: '/'
                   }
-                ]
-              }
+                }
+              ]
             }
           }
         })

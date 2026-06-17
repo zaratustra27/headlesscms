@@ -2,15 +2,19 @@ import type {NextConfig} from 'next'
 
 const nextConfig: NextConfig = {
   images: {
-    formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
     remotePatterns: [
       {
-        protocol: 'http', // Changed from https to http for local development
-        hostname: 'localhost' // Your exact local domain
+        protocol: 'http',
+        hostname: 'localhost'
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1'
       },
       {
         protocol: 'https',
-        hostname: '*.gravatar.com' // Cleaned up wildcard for Gravatar stability
+        hostname: '*.gravatar.com'
       }
     ]
   }

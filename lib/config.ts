@@ -1,6 +1,6 @@
 const config = {
-  siteName: 'Next.js WordPress',
-  siteDescription: "It's headless WordPress!",
+  siteName: 'Apagones Ecuador',
+  siteDescription: "Horarios de Apagones Programados en Ecuador",
   siteUrl: 'http://localhost/nextjs', // Your local Laragon subdirectory
   revalidation: 3600
 }
