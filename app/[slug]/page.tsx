@@ -89,28 +89,30 @@ export default async function Post({
 
       {showHorario && post.apagones && (
         <section className="my-8 rounded-lg border p-6 shadow-md">
-          <h3 className="mb-4 mt-0 text-xl font-bold">Información de Horario</h3>
+          <h3 className="mt-0 mb-4 text-xl font-bold">
+            Información de Horario
+          </h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <p className="m-0 text-sm font-semibold uppercase text-gray-500">
+              <p className="m-0 text-sm font-semibold text-gray-500 uppercase">
                 Barrio
               </p>
               <p className="m-0 text-lg">{post.apagones.barrio || 'N/A'}</p>
             </div>
             <div>
-              <p className="m-0 text-sm font-semibold uppercase text-gray-500">
+              <p className="m-0 text-sm font-semibold text-gray-500 uppercase">
                 Ciudad
               </p>
               <p className="m-0 text-lg">{post.apagones.ciudad || 'N/A'}</p>
             </div>
             <div>
-              <p className="m-0 text-sm font-semibold uppercase text-gray-500">
+              <p className="m-0 text-sm font-semibold text-gray-500 uppercase">
                 Fecha
               </p>
               <p className="m-0 text-lg">{post.apagones.fecha || 'N/A'}</p>
             </div>
             <div>
-              <p className="m-0 text-sm font-semibold uppercase text-gray-500">
+              <p className="m-0 text-sm font-semibold text-gray-500 uppercase">
                 Hora
               </p>
               <p className="m-0 text-lg">{post.apagones.hora || 'N/A'}</p>
@@ -119,17 +121,16 @@ export default async function Post({
         </section>
       )}
 
-
-      <div dangerouslySetInnerHTML={{__html: post.content ?? ''}} />
+      {!showHorario && (
+        <div dangerouslySetInnerHTML={{__html: post.content ?? ''}} />
+      )}
       <footer className="flex items-center justify-between gap-4 pb-4">
         <div>
           <h3>Categories</h3>
           <ul className="m-0 flex list-none gap-2 p-0">
             {post.categories?.nodes?.map((category: Category) => (
               <li className="m-0 p-0" key={category.databaseId}>
-                <Link href={`/category/${category.name}`}>
-                  {category.name}
-                </Link>
+                <Link href={`/category/${category.name}`}>{category.name}</Link>
               </li>
             ))}
           </ul>

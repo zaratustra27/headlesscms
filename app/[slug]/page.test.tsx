@@ -149,6 +149,9 @@ describe('app/blog/[slug]/page (Server Component)', () => {
     expect(screen.getByText('2024-12-25')).toBeInTheDocument()
     expect(screen.getByText('10:00')).toBeInTheDocument()
 
+    // Content should NOT be present when horario=true
+    expect(screen.queryByText('Content')).not.toBeInTheDocument()
+
     spy.mockRestore()
   })
 
