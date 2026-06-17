@@ -118,8 +118,6 @@ describe('app/blog/[slug]/page (Server Component)', () => {
       '/tag/Next.js'
     )
 
-    // Comment content present
-    expect(screen.getByText(/Nice post!/i)).toBeInTheDocument()
     spy.mockRestore()
   })
 

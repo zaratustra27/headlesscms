@@ -7,9 +7,7 @@ import {notFound} from 'next/navigation'
 /**
  * The category archive route.
  */
-export default async function Category({
-  params
-}: Readonly<DynamicPageProps>) {
+export default async function Category({params}: Readonly<DynamicPageProps>) {
   // Get the slug from the params.
   const {slug} = await params
 
@@ -24,7 +22,9 @@ export default async function Category({
   return (
     <main className="flex flex-col gap-12 py-8">
       <header className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold capitalize">Category: {slug.replace('-', ' ')}</h1>
+        <h1 className="text-4xl font-bold capitalize">
+          Category: {slug.replace('-', ' ')}
+        </h1>
       </header>
 
       <div className="container mx-auto grid grid-cols-1 gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">
