@@ -30,29 +30,30 @@ export default async function Tag({params}: Readonly<DynamicPageProps>) {
       <div className="container mx-auto grid grid-cols-1 gap-12 px-4 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post: Post, index: number) => (
           <article className="flex flex-col gap-4" key={post.databaseId}>
-            {post.featuredImage?.node && (
-              <Link
-                className="block overflow-hidden rounded-lg"
-                href={`/${post.slug}`}
-              >
+            <Link
+              className="relative block h-64 w-full overflow-hidden rounded-lg group"
+              href={`/${post.slug}`}
+            >
+              {post.featuredImage?.node ? (
                 <Image
                   alt={post.featuredImage.node.altText ?? post.title ?? ''}
-                  height={post.featuredImage.node.mediaDetails?.height ?? 400}
+                  fill
                   src={post.featuredImage.node.sourceUrl ?? ''}
-                  width={post.featuredImage.node.mediaDetails?.width ?? 600}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="h-64 w-full object-cover transition-transform duration-300 hover:scale-105"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                   priority={index < 3}
                 />
-              </Link>
-            )}
-            <div className="flex flex-col gap-2">
-              <Link href={`/${post.slug}`}>
+              ) : (
+                <div className="absolute inset-0 bg-gray-200" />
+              )}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-6 text-center transition-colors group-hover:bg-black/50">
                 <h2
-                  className="text-2xl font-bold transition-colors hover:text-blue-600"
+                  className="text-2xl font-bold text-white"
                   dangerouslySetInnerHTML={{__html: post.title ?? ''}}
                 />
-              </Link>
+              </div>
+            </Link>
+            <div className="flex flex-col gap-2">
               <div
                 className="line-clamp-3 text-gray-700"
                 dangerouslySetInnerHTML={{__html: post.excerpt ?? ''}}
