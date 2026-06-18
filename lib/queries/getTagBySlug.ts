@@ -2,12 +2,65 @@ import {fetchGraphQL} from '@/lib/functions'
 import {Post} from '@/lib/types'
 
 /**
- * Fetch a tag archive by slug.
+ * Fetch only cursors for a tag archive to build a pagination map.
+ * This fetches in batches of 100 to overcome the default WPGraphQL limit.
  */
-export default async function getTagBySlug(slug: string, limit: number = 10) {
+export async function getTagPaginationMap(slug: string) {
+  let allCursors: string[] = []
+  let hasNextPage = true
+  let afterCursor = ''
+
+  while (hasNextPage) {
+    const query = `
+      query GetTagPaginationMap($slug: String!, $after: String) {
+        posts(where: {tag: $slug, status: PUBLISH}, first: 100, after: $after) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          edges {
+            cursor
+          }
+        }
+      }
+    `
+
+    const variables = {
+      slug,
+      after: afterCursor
+    }
+
+    const response = await fetchGraphQL(query, variables)
+    const posts = response?.data?.posts
+
+    if (!posts) break
+
+    const cursors = posts.edges.map((edge: {cursor: string}) => edge.cursor)
+    allCursors = [...allCursors, ...cursors]
+    hasNextPage = posts.pageInfo.hasNextPage
+    afterCursor = posts.pageInfo.endCursor
+  }
+
+  return allCursors
+}
+
+/**
+ * Fetch a tag archive by slug with pagination.
+ */
+export default async function getTagBySlug(
+  slug: string,
+  limit: number = 10,
+  after: string = ''
+) {
   const query = `
-    query GetTagBySlug($slug: String!) {
-      posts(where: {tag: $slug, status: PUBLISH}, first: ${limit}) {
+    query GetTagBySlug($slug: String!, $first: Int, $after: String) {
+      posts(where: {tag: $slug, status: PUBLISH}, first: $first, after: $after) {
+        pageInfo {
+          endCursor
+          hasNextPage
+          hasPreviousPage
+          startCursor
+        }
         nodes {
           databaseId
           date
@@ -34,10 +87,12 @@ export default async function getTagBySlug(slug: string, limit: number = 10) {
   `
 
   const variables = {
-    slug: slug
+    slug,
+    first: limit,
+    after
   }
 
   const response = await fetchGraphQL(query, variables)
 
-  return response.data.posts.nodes as Post[]
+  return response?.data?.posts
 }

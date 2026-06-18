@@ -39,3 +39,7 @@ next-env.d.ts
 
 # generated files
 /lib/generated.ts
+
+# scratch
+/scratch/
+
