@@ -13,8 +13,9 @@ import {notFound} from 'next/navigation'
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-static-params
  */
 export async function generateStaticParams() {
-  // Get all blog posts.
-  const posts = await getAllPosts()
+  // Get blog posts.
+  const data = await getAllPosts(100)
+  const posts = data?.nodes
 
   // No posts? Bail...
   if (!posts) {

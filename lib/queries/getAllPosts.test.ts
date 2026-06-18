@@ -9,6 +9,10 @@ describe('getAllPosts', () => {
         return HttpResponse.json({
           data: {
             posts: {
+              pageInfo: {
+                hasNextPage: false,
+                endCursor: ''
+              },
               nodes: [
                 {
                   id: 'cG9zdDox',
@@ -35,14 +39,15 @@ describe('getAllPosts', () => {
       })
     )
 
-    const posts = await getAllPosts()
+    const data = await getAllPosts()
+    const posts = data?.nodes
 
     expect(posts).toHaveLength(2)
     expect(posts[0].title).toBe('Test Post 1')
     expect(posts[1].title).toBe('Test Post 2')
   })
 
-  it('should return empty array when no posts are found', async () => {
+  it('should return empty array in nodes when no posts are found', async () => {
     server.use(
       http.post(`${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`, () => {
         return HttpResponse.json({
@@ -55,12 +60,12 @@ describe('getAllPosts', () => {
       })
     )
 
-    const posts = await getAllPosts()
+    const data = await getAllPosts()
 
-    expect(posts).toEqual([])
+    expect(data.nodes).toEqual([])
   })
 
-  it('should return empty array on API error', async () => {
+  it('should return undefined on API error', async () => {
     server.use(
       http.post(`${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`, () => {
         return HttpResponse.json(
@@ -72,22 +77,8 @@ describe('getAllPosts', () => {
       })
     )
 
-    const posts = await getAllPosts()
+    const data = await getAllPosts()
 
-    expect(posts).toEqual([])
-  })
-
-  it('should return empty array when response data is null', async () => {
-    server.use(
-      http.post(`${process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL}`, () => {
-        return HttpResponse.json({
-          data: null
-        })
-      })
-    )
-
-    const posts = await getAllPosts()
-
-    expect(posts).toEqual([])
+    expect(data).toBeUndefined()
   })
 })

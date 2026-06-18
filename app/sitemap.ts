@@ -25,8 +25,9 @@ function generateWPEntries(
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
-    // Fetch all posts and pages
-    const allPosts = await getAllPosts()
+    // Fetch posts and pages
+    const postsData = await getAllPosts(100)
+    const allPosts = postsData?.nodes || []
     const allPages = await getAllPages()
 
     // Generate sitemap entries.

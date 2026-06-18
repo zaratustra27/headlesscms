@@ -8,8 +8,9 @@ import escape from 'xml-escape'
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/route
  */
 export async function GET() {
-  // Fetch all posts.
-  const allPosts = await getAllPosts()
+  // Fetch posts.
+  const data = await getAllPosts(100)
+  const allPosts = data?.nodes
 
   // If no posts, return response.
   if (!allPosts) {
