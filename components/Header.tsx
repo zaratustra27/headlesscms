@@ -31,7 +31,7 @@ export default function Header() {
           <h1 className="m-0 text-2xl font-bold">
             <Link href="/" className="flex items-center gap-2">
               <Image
-                src="http://localhost/nextjs/wp-content/uploads/2024/11/apagones-ecuador-flag-138x135.png"
+                src="https://dev-apagones-ecuador.pantheonsite.io/wp-content/uploads/2024/11/apagones-ecuador-flag-138x135.png"
                 alt="Flag"
                 width={40}
                 height={40}

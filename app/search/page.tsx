@@ -1,5 +1,5 @@
 import SearchForm from '@/components/SearchForm'
-import { Suspense } from 'react'
+import {Suspense} from 'react'
 
 /**
  * Search page.
