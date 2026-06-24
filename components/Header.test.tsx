@@ -28,9 +28,7 @@ describe('Header', () => {
   })
 
   it('should render the header with site branding', async () => {
-    // Since Header is an async Server Component, we need to await it
-    const HeaderComponent = await Header()
-    render(HeaderComponent)
+    render(<Header />)
 
     // Check for header element
     const header = screen.getByRole('heading', {level: 1})
@@ -38,8 +36,7 @@ describe('Header', () => {
   })
 
   it('should have no accessibility violations', async () => {
-    const HeaderComponent = await Header()
-    const {container} = render(HeaderComponent)
+    const {container} = render(<Header />)
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })

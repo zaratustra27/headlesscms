@@ -1,30 +1,39 @@
 'use client'
 
-import {searchQuery} from '@/lib/functions'
-import {SearchResults} from '@/lib/types'
+import { searchQuery } from '@/lib/functions'
+import { SearchResults } from '@/lib/types'
 import Link from 'next/link'
-import {useCallback, useEffect, useRef, useState} from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 /**
  * Search component.
  */
 export default function Search() {
-  const [query, setQuery] = useState('')
+  const searchParams = useSearchParams()
+  const initialQuery = searchParams.get('q') || ''
+
+  const [query, setQuery] = useState(initialQuery)
   const [results, setResults] = useState<SearchResults[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // Update query state if URL parameter changes
+  useEffect(() => {
+    setQuery(searchParams.get('q') || '')
+  }, [searchParams])
+
   // Perform the search.
-  const performSearch = useCallback(async () => {
+  const performSearch = useCallback(async (searchQueryString: string) => {
     // If the query is empty or too long, return early.
-    if (query.length === 0 || query.length > 100) return
+    if (searchQueryString.length === 0 || searchQueryString.length > 100) return
 
     setIsSearching(true)
     setHasSearched(true)
 
     try {
-      const data = await searchQuery(query)
+      const data = await searchQuery(searchQueryString)
       setResults(data)
     } catch (error) {
       console.error(error)
@@ -32,12 +41,12 @@ export default function Search() {
     } finally {
       setIsSearching(false)
     }
-  }, [query])
+  }, [])
 
   // Debounce the search query.
   useEffect(() => {
     if (query.length > 0) {
-      const debounceTimeout = setTimeout(performSearch, 500)
+      const debounceTimeout = setTimeout(() => performSearch(query), 500)
       return () => clearTimeout(debounceTimeout)
     } else {
       setResults([])
@@ -55,10 +64,10 @@ export default function Search() {
 
   return (
     <>
-      <div className="relative flex items-center pb-8">
+      <div className="relative flex items-center gap-4 pb-8">
         <input
           aria-label="Search"
-          className="w-full"
+          className="w-full rounded-lg border p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           name="search"
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Begin typing to search..."
@@ -66,40 +75,60 @@ export default function Search() {
           type="search"
           value={query}
         />
-        <button aria-label="reset search" onClick={resetSearch} type="reset">
+        <button
+          aria-label="reset search"
+          onClick={resetSearch}
+          type="reset"
+          className="rounded-lg bg-gray-200 px-4 py-2 transition-colors hover:bg-gray-300"
+        >
           Reset
         </button>
       </div>
 
-      {query.length > 0 && !hasSearched && <p className="m-0">Searching...</p>}
+      {query.length > 0 && !hasSearched && (
+        <p className="m-0 italic">Searching...</p>
+      )}
       {!isSearching && hasSearched && results.length === 0 && (
-        <p className="m-0">Bummer. No results found.</p>
+        <p className="m-0 text-red-600">
+          Bummer. No results found for &quot;{query}&quot;.
+        </p>
       )}
       {!isSearching && results.length > 0 && (
-        <div className="m-auto">
-          <p className="m-0">
+        <div className="w-full">
+          <p className="mb-6">
             Nice! You found{' '}
-            <span className="border-b border-b-orange-300 font-bold">
+            <span className="border-b-2 border-orange-300 font-bold">
               {results.length}
             </span>{' '}
             results for{' '}
-            <span className="bg-orange-300 p-1 text-zinc-800">{query}</span>
+            <span className="rounded bg-orange-100 px-2 py-1 font-medium text-zinc-800">
+              &quot;{query}&quot;
+            </span>
           </p>
-          <ol>
+          <div className="grid gap-4">
             {results.map((result) => (
-              <li key={result.id}>
+              <div
+                key={result.id}
+                className="rounded-lg border bg-white p-4 transition-shadow hover:shadow-md"
+              >
                 <Link
-                  href={result.url.replace('https://blog.', 'https://')}
+                  href={result.url
+                    .replace('http://localhost/nextjs', '')
+                    .replace('https://blog.', 'https://')}
                   onClick={resetSearch}
+                  className="block"
                 >
-                  <span
-                    className="m-0 p-0"
+                  <h3
+                    className="m-0 text-xl font-bold text-blue-600 hover:underline"
                     dangerouslySetInnerHTML={{__html: result.title}}
                   />
+                  <p className="mt-1 text-sm tracking-wider text-gray-500 uppercase">
+                    {result.subtype || result.type}
+                  </p>
                 </Link>
-              </li>
+              </div>
             ))}
-          </ol>
+          </div>
         </div>
       )}
     </>

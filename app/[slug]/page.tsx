@@ -24,8 +24,8 @@ export async function generateStaticParams() {
 
   // Return the slugs for each post.
   return posts
-    .filter((post) => post.slug)
-    .map((post) => ({
+    .filter((post: {slug?: string | null}) => post.slug)
+    .map((post: {slug?: string | null}) => ({
       slug: post.slug as string
     }))
 }

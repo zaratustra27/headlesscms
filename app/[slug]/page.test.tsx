@@ -44,15 +44,9 @@ describe('app/blog/[slug]/page (Server Component)', () => {
 
   it('generateStaticParams returns slugs from getAllPosts()', async () => {
     // Spy on query function to avoid needing real MSW data shape here
-    const spy = vi
-      .spyOn(getAllPostsModule, 'default')
-      .mockResolvedValue({
-        nodes: [
-          {slug: 'hello-world'},
-          {slug: null},
-          {slug: 'another-post'}
-        ]
-      } as any)
+    const spy = vi.spyOn(getAllPostsModule, 'default').mockResolvedValue({
+      nodes: [{slug: 'hello-world'}, {slug: null}, {slug: 'another-post'}]
+    } as any)
 
     const params = await generateStaticParams()
     expect(params).toEqual([{slug: 'hello-world'}, {slug: 'another-post'}])
