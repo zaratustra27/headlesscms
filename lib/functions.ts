@@ -113,7 +113,7 @@ export async function searchQuery(query: string): Promise<SearchResults[]> {
         },
         next: {
           tags: [`search-${query}`],
-          revalidate: config.revalidate
+          revalidate: config.revalidation
         }
       }
     )
