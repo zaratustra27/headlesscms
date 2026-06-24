@@ -1,15 +1,17 @@
 import SearchForm from '@/components/SearchForm'
+import { Suspense } from 'react'
 
 /**
  * Search page.
  */
 export default function Page() {
-  // Include a trivial, countable statement so coverage records this file
   const title = 'Search'
   return (
     <main className="flex flex-col gap-8">
       <h1>{title}</h1>
-      <SearchForm />
+      <Suspense fallback={<p>Loading...</p>}>
+        <SearchForm />
+      </Suspense>
     </main>
   )
 }
