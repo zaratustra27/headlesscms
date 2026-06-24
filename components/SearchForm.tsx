@@ -1,10 +1,10 @@
 'use client'
 
-import { searchQuery } from '@/lib/functions'
-import { SearchResults } from '@/lib/types'
+import {searchQuery} from '@/lib/functions'
+import {SearchResults} from '@/lib/types'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {useSearchParams} from 'next/navigation'
+import {useCallback, useEffect, useRef, useState} from 'react'
 
 /**
  * Search component.

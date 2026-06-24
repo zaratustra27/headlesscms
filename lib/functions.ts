@@ -1,5 +1,5 @@
 import config from '@/lib/config'
-import {GraphQLResponse, SearchResults} from '@/lib/types'
+import { GraphQLResponse, SearchResults } from '@/lib/types'
 
 /**
  * Function to execute a GraphQL query.
@@ -51,7 +51,7 @@ export async function fetchGraphQL<T = any>(
       }),
       next: {
         tags: [slug, 'graphql', `type:${contentType}`],
-        revalidate: config.revalidate
+        revalidate: config.revalidation
       }
     })
 
