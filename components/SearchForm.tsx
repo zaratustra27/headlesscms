@@ -114,7 +114,8 @@ export default function Search() {
                 <Link
                   href={result.url
                     .replace('http://localhost/nextjs', '')
-                    .replace('https://blog.', 'https://')}
+                    .replace('https://blog.', 'https://')
+					.replace('https://dev-apagones-ecuador.pantheonsite.io', '')}
                   onClick={resetSearch}
                   className="block"
                 >
